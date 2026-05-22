@@ -170,6 +170,35 @@ main {
   line-height: 1.2;
 }
 
+#nextKinball,
+.game-card h3,
+.zone-card h3 {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+}
+
+.zone-name {
+  display: inline-flex;
+  align-items: center;
+  min-height: 24px;
+  padding: 3px 8px;
+  border-radius: 999px;
+  background: var(--zone-bg);
+  color: var(--zone-ink);
+  font-weight: 900;
+  line-height: 1.1;
+  white-space: nowrap;
+  box-shadow: inset 0 0 0 1px rgba(16, 42, 47, 0.16);
+}
+
+.versus {
+  color: var(--muted);
+  font-size: 0.82rem;
+  font-weight: 900;
+}
+
 small,
 .team-result,
 .timeline-item p,

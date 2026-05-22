@@ -57,6 +57,8 @@ const zones = [
   zone(9, "Rouge bourgogne", "#9b3a37", "#fff", ["Grande Prairie", "Whitecourt"])
 ];
 
+const zonesById = new Map(zones.map((entry) => [entry.id, entry]));
+
 const kinballGames = [
   game("2026-05-23", "09:00", "10:00", [1, 9, 3]),
   game("2026-05-23", "10:00", "11:00", [4, 5, 6]),
@@ -141,9 +143,13 @@ function isCurrent(entry, now) {
   return toDate(entry.date, entry.start) <= now && now < toDate(entry.date, entry.end);
 }
 
-function gameTitle(entry) {
+function zoneNameHtml(entry, text = `Zone ${entry.id}`) {
+  return `<span class="zone-name" style="--zone-bg: ${entry.bg}; --zone-ink: ${entry.ink};">${text}</span>`;
+}
+
+function gameTitleHtml(entry) {
   if (entry.label) return entry.label;
-  return entry.teams.map((team) => `Zone ${team}`).join(" c. ");
+  return entry.teams.map((team) => zoneNameHtml(zonesById.get(team))).join('<span class="versus">c.</span>');
 }
 
 function findZone(query) {
@@ -188,11 +194,11 @@ function renderStatus() {
 
   const kinballUpcoming = nextKinballGame(now);
   if (kinballUpcoming) {
-    nextKinball.textContent = gameTitle(kinballUpcoming);
+    nextKinball.innerHTML = gameTitleHtml(kinballUpcoming);
     nextKinballMeta.textContent = `${dayLabel(kinballUpcoming.date)} • ${timeRange(kinballUpcoming)}`;
   } else {
     nextKinball.textContent = "Aucun match à venir";
-    nextKinballMeta.textContent = selectedZone ? `Zone ${selectedZone.id}` : "Kinball Junior";
+    nextKinballMeta.innerHTML = selectedZone ? zoneNameHtml(selectedZone) : "Kinball Junior";
   }
 }
 
@@ -241,7 +247,7 @@ function renderKinball() {
     card.innerHTML = `
       <div class="time">${shortDayLabel(entry.date)}<br>${timeRange(entry)}</div>
       <div>
-        <h3>${gameTitle(entry)}</h3>
+        <h3>${gameTitleHtml(entry)}</h3>
         <p>${entry.location}${isRelevant ? ` • Ta zone` : ""}</p>
       </div>
     `;
@@ -264,7 +270,7 @@ function renderZones(filter = "") {
       card.style.background = entry.bg;
       card.style.setProperty("--zone-ink", entry.ink);
       card.innerHTML = `
-        <h3>Zone ${entry.id} - ${entry.color}</h3>
+        <h3>${zoneNameHtml(entry, `Zone ${entry.id} - ${entry.color}`)}</h3>
         <ul>${entry.teams.map((team) => `<li>${team}</li>`).join("")}</ul>
       `;
       zonesList.append(card);
@@ -276,7 +282,7 @@ function selectZone(entry) {
   if (!entry) {
     teamResult.textContent = "Recherche une ville pour personnaliser tes matchs de kinball.";
   } else {
-    teamResult.textContent = `Zone ${entry.id} (${entry.color}) utilisée pour ton prochain match de kinball.`;
+    teamResult.innerHTML = `${zoneNameHtml(entry, `Zone ${entry.id} (${entry.color})`)} utilisée pour ton prochain match de kinball.`;
   }
   renderStatus();
   renderKinball();
@@ -285,7 +291,7 @@ function selectZone(entry) {
 function hydrateSelectedZone() {
   if (!selectedZone) return;
   teamSearch.value = `Zone ${selectedZone.id}`;
-  teamResult.textContent = `Zone ${selectedZone.id} (${selectedZone.color}) utilisée pour ton prochain match de kinball.`;
+  teamResult.innerHTML = `${zoneNameHtml(selectedZone, `Zone ${selectedZone.id} (${selectedZone.color})`)} utilisée pour ton prochain match de kinball.`;
 }
 
 document.querySelectorAll(".segmented button").forEach((button) => {
