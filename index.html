@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="theme-color" content="#0b7285" />
+    <title>Weekend JFA</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <header class="topbar">
+      <div>
+        <p class="eyebrow">JFA 2026</p>
+        <h1>Tableau JFA</h1>
+      </div>
+      <button class="icon-button" id="openZones" type="button" aria-label="Ouvrir les zones">
+        <span aria-hidden="true">⌕</span>
+        Zones
+      </button>
+    </header>
+
+    <main>
+      <section class="status-panel">
+        <div class="status-copy">
+          <p class="eyebrow">En ce moment</p>
+          <h2 id="currentTitle">Chargement de l’horaire...</h2>
+          <p id="currentMeta"></p>
+        </div>
+        <div class="progress-shell" aria-hidden="true">
+          <div id="currentProgress"></div>
+        </div>
+      </section>
+
+      <section class="quick-grid" aria-label="Informations rapides">
+        <article>
+          <span class="label">Prochain</span>
+          <strong id="nextTitle">Chargement...</strong>
+          <small id="nextMeta"></small>
+        </article>
+        <article>
+          <span class="label">Kinball</span>
+          <strong id="nextKinball">Chargement...</strong>
+          <small id="nextKinballMeta"></small>
+        </article>
+      </section>
+
+      <section class="card controls-card">
+        <label for="teamSearch">Trouver ton équipe</label>
+        <div class="search-row">
+          <input id="teamSearch" type="search" placeholder="Ville ou zone..." autocomplete="off" />
+          <button id="clearTeam" type="button" aria-label="Effacer la recherche d’équipe">×</button>
+        </div>
+        <div id="teamResult" class="team-result">Recherche une ville pour personnaliser tes matchs de kinball.</div>
+      </section>
+
+      <section class="section-heading">
+        <div>
+          <p class="eyebrow">Général</p>
+          <h2>Horaire</h2>
+        </div>
+        <div class="segmented" role="tablist" aria-label="Jour de l’horaire">
+          <button class="active" type="button" data-day="2026-05-22">Ven</button>
+          <button type="button" data-day="2026-05-23">Sam</button>
+          <button type="button" data-day="2026-05-24">Dim</button>
+        </div>
+      </section>
+      <section id="scheduleList" class="timeline" aria-live="polite"></section>
+
+      <section class="section-heading">
+        <div>
+          <p class="eyebrow">Kinball Junior</p>
+          <h2>Matchs</h2>
+        </div>
+        <span class="chip">École Michaëlle-Jean</span>
+      </section>
+      <section id="kinballList" class="game-list"></section>
+
+      <details class="poster">
+        <summary>Ouvrir l’affiche originale de l’horaire</summary>
+        <img src="JEUX_horaire72x48_2026-4.jpg" alt="Affiche originale de l’horaire JFA 2026" />
+      </details>
+    </main>
+
+    <dialog id="zonesDialog">
+      <div class="dialog-header">
+        <h2>Zones</h2>
+        <button id="closeZones" class="icon-only" type="button" aria-label="Fermer les zones">×</button>
+      </div>
+      <input id="zoneSearch" type="search" placeholder="Équipe, ville, couleur ou zone..." autocomplete="off" />
+      <div id="zonesList" class="zones-list"></div>
+    </dialog>
+
+    <nav class="bottom-nav" aria-label="Navigation principale">
+      <a href="#scheduleList">Horaire</a>
+      <button id="zonesNav" type="button">Zones</button>
+      <a href="#kinballList">Kinball</a>
+    </nav>
+
+    <script src="app.js"></script>
+  </body>
+</html>
